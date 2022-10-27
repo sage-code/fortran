@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Website title -->
-  <title>Syntax Overview</title>  
+  <title>Fortran Syntax</title>  
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
@@ -36,7 +36,7 @@
 </div><hr>
 
 
-<h1>Syntax Overview</h1>
+<h1>Fortran Syntax</h1>
 
 
 <div class="alert alert-secondary shadow-sm">
@@ -108,10 +108,10 @@ end program
 <code class="language-fortran">!simple program
 program main
   implicit none
-  character (len = 20) :: name1, name2
+  character (len = 20) :: nam1, nam2
   print *, 'Who are you? :'
-  read *, name1, name2
-  print *,"Hello ",name1," ",name2
+  read *, nam1, nam2
+  print *,"Hello ",nam1," ",nam2
 end program
 </code></pre>
 </div>
@@ -136,7 +136,72 @@ Elucian Moise
 
 <p><em>Homework: </em>Log-in to <a href="https://replit.com" target="_blank" rel="nofollow noopener">replit.com</a>, and create your won example. Do not use copy paste. Instead, try to type the code line by line. You will get use with the syntax this way. I hope it works!</p>
 
+<h2>History</h2>
 
+<p>Fotran has a long hystory of modifications. To be brief, we mention the older major versions: Fortran 66, Fortran 77. The new version are Fortran90, Fortran 95, Fortran 2000. In the future we will have Fortran 2003 and beyound. Important changes:</p>
+
+<h3>Fortran 90 features</h3>
+
+<p>ISO/IEC standard 1539:1991 in 1991 and an ANSI Standard in 1992. In addition to changing the official spelling from FORTRAN to Fortran, this major revision added many new features to reflect the significant changes in programming practice that had evolved since the 1978 standard:</p>
+
+<ul>
+<li>Inline comments</li>
+<li>Lowercase Fortran keywords</li>
+<li>Operator overloading</li>
+<li>Derived (structured) data types</li>
+<li>RECURSIVE procedures</li>
+<li>SELECT . . . CASE construct for multi-way selection</li>
+<li>Portable specification of numerical precision</li>
+<li>Free-form source input removed the need to skip the first six character positions before entering statements.</li>
+<li>Identifiers up to 31 characters in length (In the previous standard, it was only six characters).</li>
+<li>Ability to operate on arrays (or array sections) as a whole, thus greatly simplifying math and engineering computations.</li>
+<li>WHERE statement for selective array assignment</li>
+<li>Array-valued constants and expressions,</li>
+<li>User-defined array-valued functions and array constructors.</li>
+<li>Modules, to group related procedures and data together, and make them available to other program units, including the capability to limit the accessibility to only specific parts of the module.</li>
+<li>A vastly improved argument-passing mechanism, allowing interfaces to be checked at compile time</li>
+<li>User-written interfaces for generic procedures</li>
+<li>New data type declaration syntax, to specify the data type and other attributes of variables</li>
+<li>Dynamic memory allocation by means of the ALLOCATABLE attribute and the ALLOCATE and DEALLOCATE statements</li>
+<li>POINTER attribute, pointer assignment, and NULLIFY statement to facilitate the creation and manipulation of dynamic data structures</li>
+<li>Structured looping constructs, with an END DO statement for loop termination, and EXIT and CYCLE statements for terminating normal DO loop iterations in an orderly way</li>
+<li>New and enhanced intrinsic procedures. Free-form source input removed the need to skip the first six character positions before entering statements.</li>
+
+</ul>
+
+<h3>Fortran 95 extension</h3>
+
+<p>Fortran 95 introduce "High Performance Fortran". Is out of scope for this tutorial to present these features. You can read it yourself after you finish the fundamentals.</p>
+
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Fortran_95_language_features"
+   rel="nofollow noopener noopener" target="_blank">Fortran_95_language_features</a></li>
+<li><a href="https://en.wikipedia.org/wiki/High_Performance_Fortran"
+   rel="nofollow noopener noopener" target="_blank">High Performance Fortran - Extension</a></li>
+</ul>
+
+<h3>Deprecated features</h3>
+
+<p>It is good to know what deprecated features are yet presented in code or tutorials and may not work for your compiler. Do not try to use these features. If you do you will get an error: "deleted feature..." so you know you will not use it.</p>
+
+<ul>
+<li>Arithmetic IF-statement </li>
+<li>Non-integer DO parameters or control variables  </li>
+<li>Shared DO-loop termination or termination with a statement other than END DO or CONTINUE    </li>
+<li>Branching to END IF from outside a block  </li>
+<li>Alternate return  </li>
+<li>PAUSE statement </li>
+  <li>ASSIGN statement and assigned GO TO statement </li>
+    <li>Assigned statement numbers and FORMAT specifiers  </li>
+<li>Computed GO TO statement  </li>
+<li>Statement functions </li>
+<li>DATA statements among executable statements </li>
+<li>CHARACTER* form of CHARACTER declaration  </li>
+<li>Assumed character length functions  </li>
+<li>Fixed form source code  </li>
+</ul>
+
+<p><em>Notes: </em>The compiler will try to use the proper version for your code if you use a different extension. Without any number after f, files like *.f will should be compiled with Fortran 77. File named *.f90 or *.f95 will be used for modern Fortran code.</p>
 <!-- work in progress-->
 
 <hr>
