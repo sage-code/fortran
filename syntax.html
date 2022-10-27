@@ -85,6 +85,14 @@ end program
 
 <p>A statement usually start with a keyword and uses one or more expressions. Expressions can contain identifiers, operators, data-literals, function calls and delimiters. An expression that is not used in a statement does not make sense in Fortran.</p>
 
+<h4>continuation symbol</h4>
+
+<p>A statement can be extended on multiple lines of code. You can use continuation operator & that connect the lines. Operator & is not part of the statement and is ignored by the compiler.</p>
+
+<h4>Multiple Statements</h4>
+
+<p>You can have many statements on a single line. In this case you can separate the statement with semicolumn ";". Sometimes programmers add semicolumn to indicate "no statement" where you should have one.</p>
+
 <h2>Source Code</h2>
 
 <p>Source code is usually stored in a file. This has extension "f" or "f90" or "f95". Is depending on syntax version and compiler you are using. I recommand to use only "f95" version for this course.</p>
@@ -105,13 +113,19 @@ end program
 <div class="panel-heading">main.f95</div>
 <div class="panel-body">
 <pre class="code-panel">
-<code class="language-fortran">!simple program
+<code class="language-fortran"
+>! main program
 program main
-  implicit none
-  character (len = 20) :: nam1, nam2
-  print *, 'Who are you? :'
-  read *, nam1, nam2
-  print *,"Hello ",nam1," ",nam2
+  print  * , "Hello " // get_name()
+contains
+  function get_name() result(name)
+     character (len=40) :: name
+     character (len=20) :: name1, name2
+     print *, 'Who are you? :'
+     read *, name1, name2
+     name = trim(name1) // " " // &
+            trim(name2) 
+  end function
 end program
 </code></pre>
 </div>
@@ -138,7 +152,7 @@ Elucian Moise
 
 <h2>History</h2>
 
-<p>Fotran has a long hystory of modifications. To be brief, we mention the older major versions: Fortran 66, Fortran 77. The new version are Fortran90, Fortran 95, Fortran 2000. In the future we will have Fortran 2003 and beyound. Important changes:</p>
+<p>Fotran has a long hystory of modifications. To be brief, we mention the older major versions: Fortran 66, Fortran 77. The new version are Fortran90, Fortran 95, Fortran 2003, Fortran 2008, Fortran 2018. In the future we will have Fortran 2023 and beyound. Important changes:</p>
 
 <h3>Fortran 90 features</h3>
 

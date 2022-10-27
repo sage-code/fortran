@@ -42,35 +42,59 @@
 <div class="alert alert-secondary shadow-sm">
 Fortran has higher level concepts to organize a large program into small parts named sometimes subprograms. The main program will orghestrate a main logical thread that has jumps, back and forward from a subprogram to another into a tree like structure. This is called structured programming.</div>
 
-<p>Structured programming was invented to eliminate the "spagety code" syndrom that can be encontered in linear programming that is using "goto" statement to jump back and forward. In Fortran the use of goto statement is not necesary and not used, so the program is more readable.</p>
+<p>Structured programming was invented to eliminate the "spagety code" syndrom that can be encontered in linear programming that is using "goto" statement to jump back and forward. In modern Fortran the use of goto statement is not necesary and not used, so the program is more readable.</p>
 
 <h2>Program</h2>
 
-<h2>Subroutine</h2>
-
-<h2>Function</h2>
-
-<h2>Module</h2>
-
-
-<!-- a regular diagram -->
-<div class="text-center">
-  <img src="../images/while.svg" alt="no description"
-       width="600" class="img-fluid protect rounded shadow border" >
-  <p>While Loop</p>
-</div>
-
+<p>Fotran has a special keyword to define the main program. This is translated to function main(), and is the entry point of any fortran application. The main program has a name and parameters.</p>
 
 <!--code pannel-->
 <div class="panel">
-<div class="panel-heading">example</div>
+<div class="panel-heading">syntax pattern</div>
 <div class="panel-body">
-<pre class="code-panel"><code class="language-fortran line-numbers">!this is fortran 
-program hellp
-    print "hello world"
+<pre class="code-panel"><code class="language-fortran line-numbers"
+>!this is fortran 
+program main
+   ! declare parameters
+   ! declare variables
+   ! program statements
+   ...
+contains
+   ! declare subprograms
+   ...
 end program hellp
 </code></pre>
 </div></div>
+
+<p><em>Note: </em>The main program can have exit status. If the exit status is 0 the program is succesful. If the exit status is not zero but a positive number, that is the error code.</p>
+
+<p><em>Stop: </em> Main program can be intrerupted using "stop" statement. GNU compiler has exit extension but is not part of the standard. I will try to find out more about "stop" statement.</p>
+
+<h2>Subroutine</h2>
+
+<p>A subroutine is a subprogram that have a name, input/oturput parameters and side-effects. Subroutine has it's own local scope where you can declare variables. The subroutine can be created in "contains" region of program.</p>
+
+
+<h4>parameters</h4>
+
+<p>Unlike other strongly typed languages, in Fortran, the parameters are declared without type in the subroutine signature. These are called dummy parameters. After signature, youc an add information about every parameter using declarative statements.</p>
+
+
+<h2>Function</h2>
+
+<p>Fortran has enhanced support for functions. A function can return a single result. You can define the dummy result name in the function signature using keyword "result". You need to define the result type using declarative statement in the function body.</p>
+
+
+<h2>Module</h2>
+
+<p>Fortran is a modular language. Modules, are usually stored in external files but can be created in the same file as the main program. You must import a module before you can use it's members. You can import a module using the keyword: "use".</p>
+
+<!-- a regular diagram -->
+<div class="text-center">
+  <img src="../images/function.svg" alt="function components"
+       width="600" class="img-fluid protect rounded shadow border" >
+  <p>Function Components</p>
+</div>
 
 <!--console pannel-->
 <div class="panel">
