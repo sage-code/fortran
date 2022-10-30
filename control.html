@@ -48,8 +48,7 @@ Control flow statements are managing the logic workflow of the application. It m
 <hr>
 <ul>
 <li><em>Conditional</em></li>
-<ul>
-    <li><a href="#exp">expression</a> - create ternary expression</li   
+<ul>  
     <li><a href="#bra">branches</a> - create optional block o code</li>
     <li><a href="#lad">ladder</a> - create exclusive branches</li> 
 </ul>
@@ -75,39 +74,7 @@ Control flow statements are managing the logic workflow of the application. It m
 
 <h2>Conditional</h2>
 
-<p>Conditionals are Boolean expressions that can return value .true. or .false. This expressions are part of Boolean algebra. Conditionals are used to create branches and ladders.</p>
-
-<h3><a id="exp"></a>Expressions</h3>
-
-<p>Before creating conditionals you need to understand logical expressions. These are evaluated to values {.true. or .false.} in old Fortran {.T. or .F.}. You can use comparisons and logical operators to combine with variables, constants and function calls to create these expressions.</p>
-
-<h4>operators</h4>
-
-<p>Fortran operators have changed from old syntax 77 to new syntax 90 and beyond. We use these operators to create logic expressions that return a Boolean value. You can compare numbers or characters.</p> 
-
-<!-- simple table-->
-<table class="table table-bordered table-striped" style="width: 100%;">
-<tr>    
-    <th>New Fortran</th>
-    <th>Old Fortran</th>
-    <th>Description</th>    
-</tr></thead>
-
-<tbody>
-<tr>
-<tr><td>&lt; </td><td>.LT. </td><td>Less than             </td></tr>
-<tr><td>&gt; </td><td>.GT. </td><td>Greater than          </td></tr>
-<tr><td>>=   </td><td>.GE. </td><td>Greater than or equal </td></tr>
-<tr><td><=   </td><td>.LE. </td><td>Less than or equal    </td></tr>
-<tr><td>==   </td><td>.EQ. </td><td>Equal                 </td></tr>
-<tr><td>/=   </td><td>.NE. </td><td>Not equal             </td></tr>
-<tr><td>.not.</td><td>.NOT.</td><td>NOT                   </td></tr>
-<tr><td>.and.</td><td>.AND.</td><td>AND                   </td></tr>
-<tr><td>.or. </td><td>.OR. </td><td>OR                    </td></tr>
-</tbody>
-</table>
-
-<p>Note: Conditional expressions are usually enclosed in round brackets when used in statements. Also, you can combine multiple conditional expressions in larger expressions using logic operators: NOT, AND, OR, the precedence of these operators is important. NOT has higher precedence while OR has lower precedence. We group sub-expressions using () to modify the order of evaluation.</p>
+<p>Conditionals are Logic expressions that can return value .true. or .false. Conditional expressions are usually enclosed in round brackets when used in statements. Also, you can combine multiple conditional expressions in larger expressions using logic operators. Conditionals are used to create branches, ladders and conditional loops.</p>
 
 <h4>Example</h4>
 

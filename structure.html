@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Introduction to program structure in Fortran.">
+  <meta name="author" content="Elucian Moise">
+  <meta name="keywords" content="fortran, structure, structured programming, paradigm">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Website title -->
+  <title>Program Structure</title>  
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+  <!-- Icon -->
+  <link rel="icon" type="image/png"  href="../images/favicon.ico">  
+  <!-- Prism Highlighter -->
+  <link rel="stylesheet" href="../prism.css">
+  <script src="../prism.js"></script>
+  <!-- custom css -->
+  <link rel="stylesheet" href="../sage.css">
+</head>
+
+<body>
+
+<div class="container">
+        
+<!-- header -->
+<div class="row">
+    <div class="col">
+        <a href="https://sagecode.net"><img src="../images/sage-logo.svg" alt="Sage-Code Laboratory" height="80"/></a>
+    </div>  
+    <div class="col  bottom-right">
+        <a href="index.html#lang-index">index</a>&lt;--
+    </div>
+</div><hr>
+
+
+<h1>Program Structure</h1>
+
+
+<div class="alert alert-secondary shadow-sm">
+Fortran has higher level concepts to organize a large program into smaller parts named subprograms. The main program will orghestrate a main logical thread that has branches, loops and jumps. This is called structured programming.</div>
+
+<h4>Elements defined:</h4>
+
+<hr>
+<ul>
+    <li><a href="#program">Program</a></li>
+    <li><a href="#subroutine">Subroutine</a></li>
+    <li><a href="#function">Function</a></li>
+    <li><a href="#module">Module</a></li>
+</ul>
+
+<hr>
+
+<p><em>Note: </em>Structured programming was invented to eliminate the <em>spagetty code</em> syndrom that can be encontered in linear programming. Fortran use to have GO TO statement to jump back and forward in the program using numeric labels. In modern Fortran we no longer use <em>goto</em> statement.</p>
+
+<h2><a id="program"></a>Program</h2>
+
+<p>Fotran has a special keyword to define the main program. This is translated to function main() in C, and is the entry point of any fortran application. The main program has a name and two regions: executable region and content region.</p> 
+
+<p>First region after program name is the the executable region. You can use this to declare parameters and local variables but also the main thread of the application. Second is the content region for local functions and subroutines.</p>
+
+<!--code pannel-->
+<div class="panel">
+<div class="panel-heading">syntax pattern</div>
+<div class="panel-body">
+<pre class="code-panel"><code class="language-fortran line-numbers"
+>!this is fortran 
+program main
+   ! declare parameters
+   ! declare variables
+   ! program statements
+   ...
+contains
+   ! declare subprograms
+   ...
+end program
+</code></pre>
+</div></div>
+
+<h4>program parameters</h4>
+
+<p>Program parameters are declared using statements. The input parameters must be parsed. There are specific variable names and functions available to capture the parameters.</p>
+
+
+<h4>program exit status</h4>
+
+<p>The program terminates when there is an error. If the program do not have errors, the exit status is 0, and can be verified by an external script or in the command line by using command: <code>echo $?</code>. Exit status can be set using 2 methods:</p>
+
+<ol>
+<li>using <em>exit: </em>The main program can have exit status. If the exit status is 0 the program is succesful. If the exit status is not zero but a positive number, that is the error code.</li>
+
+<li>using <em>stop: </em>Main program can be intrerupted using "stop" statement. GNU compiler has exit extension but is not part of the standard. I will try to find out more about "stop" statement.</li>
+</ol>
+
+<h2><a id="subroutine"></a>Subroutine</h2>
+
+<p>A subroutine is a subprogram that have a name, input/oturput parameters and side-effects. Subroutine has it's own local scope where you can declare variables. The subroutine can be created in "contains" region of program.</p>
+
+<h4>subroutine parameters</h4>
+
+<p>The parameters are declared without type in the subroutine signature. These are called dummy parameters. At the beginning of the soubroutine, after signature, you can declare every parameter using declarative statements similar to local variables.</p>
+
+<h4>return statement</h4>
+
+<p>A subroutine can have only one end but many exit points. A subprogram can use <em>return</em> statement many times to create early exit points. Usually return is used for preconditions and is very convenient to intrerupt the subprogram when the job is done.</p>
+
+<h4>subroutine results</h4>
+
+<p>A subroutine can have one or more results. The results are usually declared similar to parameters, except these are output parameters. You can set the result value as any other variable during subroutine execution. You must prepare the result before return.</p>
+
+<h4>calling a subroutine</h4>
+
+<p>A subroutine is not executed when is declared but later. It can be called once or many times from main thread or from another subroutine. You can use special statement <em>call</em> to execute a subroutine.</p>
+
+<!--code pannel-->
+<div class="panel">
+<div class="panel-heading">syntax pattern</div>
+<div class="panel-body">
+<pre class="code-panel"><code class="language-fortran line-numbers"
+>!declare subroutine
+program main
+   ! call subroutine
+   call test(arguments)
+contains
+   ! test is the subroutine name
+   subroutine test(parameters)
+      ! declarations statements
+      ...
+      ! computation statements
+      return
+   end subroutine
+end program
+</code></pre>
+</div></div>
+
+<h2><a id="function"></a>Function</h2>
+
+<p>Fortran has enhanced support for functions. A function can return a single result. You can define the dummy result name in the function signature using keyword <em>result</em>. You need to define the result type using declarative statement in the function body like any other variable.</p>
+
+<!-- a regular diagram -->
+<div class="text-center">
+  <img src="../images/function.svg" alt="function components"
+       width="500" class="img-fluid protect rounded shadow border" >
+  <p>Function Components</p>
+</div>
+
+<h4>function parameters</h4>
+
+<p>The parameters are declared without type in the function signature. These are called dummy parameters. At the beginning of the function, after the signature, you can declare every parameter using declarative statements similar to local variables.</p>
+
+
+<h4>calling a function</h4>
+
+<p>Functions can be called in main program or subroutines using function name follow by round brackets () that contain list of arguments for the parameters. Functions can be used in expressions.</p>
+
+<!--code pannel-->
+<div class="panel">
+<div class="panel-heading">syntax pattern</div>
+<div class="panel-body">
+<pre class="code-panel"><code class="language-fortran line-numbers"
+>!declare functions 
+program main
+   ! main thread
+   type_name:: x, y
+   y=fn(x) ! call function
+contains
+   ! fn is the function name
+   function fn(p) result(r)
+      ! declaration
+      type_name:: p
+      type_name:: r
+      ...
+      ! prepare result
+      r=expression
+   end function
+end program
+</code></pre>
+</div></div>
+
+<h2><a id="module"></a>Module</h2>
+
+<p>Fortran is a modular language. Modules, are usually stored in external files but can be created in the same file as the main program. You must import a module before you can use it's members. You can import a module using the keyword: "use".</p>
+
+
+<!--code pannel-->
+<div class="panel">
+<div class="panel-heading">syntax pattern</div>
+<div class="panel-body">
+<pre class="code-panel"><code class="language-fortran line-numbers"
+>!declare module
+module test
+   ! declare module variables
+   ...
+contains
+   ! fn is the function name
+   function fn() result(r)
+      ! prepare result
+      r=expression
+   end function
+end module
+
+!using module
+program main
+   use test
+   y=fn() ! call function
+end program
+</code></pre>
+</div></div>
+
+<p><em>Notes: </em>Modules can be contained in the same file as the main program but alos can be in separate files. When using separate files, the compiler can compile multiple modules. You can pass module names as a list of names to the compiler.</p>
+
+<!-- work in progress-->
+
+<hr>
+<p><b>Read next:</b>
+<a href="types.html">Data Types</a></p>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-copyright text-center"></div>
+</footer>
+
+</div></body></html>

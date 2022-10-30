@@ -215,7 +215,12 @@ Elucian Moise
 <li>Fixed form source code  </li>
 </ul>
 
-<p><em>Notes: </em>The compiler will try to use the proper version for your code if you use a different extension. Without any number after f, files like *.f will should be compiled with Fortran 77. File named *.f90 or *.f95 will be used for modern Fortran code.</p>
+<h2>File Endings</h2>
+
+<p>Historically, the file endings of Fortran source files are .f and .for. These are associated with Fortran < 90, and therefore with fixed format. Even modern compilers assume fixed format for them, unless the free format command-line flag is used.</p>
+
+<p>For this reason, file endings should be used that represent modern Fortran versions. We can either set endings that correspond with the actual language version (.f03 for 2003, .f08 for 2008, .f18 for 2018, and so on) or simply use .f90 as a default to indicate modern Fortran, with the latter being recommended. Be aware that you must set the file ending to either .f90 or .f95 to be recognised by CMake.</p>
+
 <!-- work in progress-->
 
 <hr>
