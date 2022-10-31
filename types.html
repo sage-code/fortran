@@ -277,7 +277,9 @@ end program
 
 <p>Before creating conditionals you need to understand logical expressions. These are evaluated to values {.true. or .false.} in old Fortran {.T. or .F.}. You can logical and relation operators with variables, constants and function calls to create logical expressions.</p>
 
-<h4>Logic operators</h4>
+<h3>Logic operators</h3>
+
+<p>Logic operators are based on keywords. These special keywords are enclosed between two dots. Is a little bit annoing but you can get use to it eventually.</p>
 
 <table class="table table-bordered table-striped" style="width: 100%;">
 <tr>    
@@ -348,7 +350,7 @@ end program
 </tbody>
 </table>
 
-<h4>Relation operators</h4>
+<h3>Relation operators</h3>
 
 <p>Fortran operators have changed from old syntax 77 to new syntax 90 and beyond. We use these operators to create logic expressions that return a Boolean value. You can compare numbers or characters.</p> 
 
@@ -382,7 +384,7 @@ end program
 
 <p>In Fotran, strings are ASCII encoded. You can have string literals enclosed in single or double quoted delimiters. A delimiter must be duplicated inside string to represent the symbol itself. Usually text strings are double quoted because English has &apos; used in words.</p>
 
-<h4>Concatenation: "//"</h4> 
+<h3>Concatenation: "//"</h3> 
 
 <p>Strings can be joined together using special operator double slash, that is usually a comment in other languages. This is why Fortran is a little bit strange. Remember, comments are starting with bang symbol "!" and this is also unusual.</p> 
 
@@ -415,32 +417,44 @@ end program string
 </code></pre>
 </div></div>
 
-<p><em>Note: </em>Numbers and strings can't be concatenated together like in JavScript or Python. You need to convert the numbers into strings before concatenation, but this is not straight forward.</p>
+<h4>Notes:</h4>
 
-<h4>Continuation: "&amp;" </h4>
+<ol>
+<li>Numbers and strings can't be concatenated together like in JavScript or Python. You need to convert the numbers into strings before concatenation, but this is not straight forward.</li>
 
-<p> In fortrand longer strings can be represented on multiple lines if each line is ending with single ampersand symbol. This is the continuation operator and is not part of the string.</p>
+<li> In Fortran standard there is no escape sequence like in C. Therefore you must use function achar() to produce special characters and the you can concatenate a special character in the string.</li>
+</ol>
+
+<h3>Continuation: "&amp;" </h3>
+
+<p> In Fortrand longer strings can be represented on multiple lines if each line is ending with single ampersand symbol. This is the continuation operator and is not part of the string.</p>
+
 
 
 <!--two columns pattern-->
 <div class="row">
 <!-- first column -->
 <div class="column col-md-6 panel">
-<div class="panel-heading">example</div>
+<div class="panel-heading">example: continue.f95</div>
 <div class="panel-body">
 <pre class="code-panel">
-<code class="language-bash line-numbers"
+<code class="language-fortran line-numbers"
 >program main
+
+! escape character
+character :: lf = achar(10) 
 
 ! this statement does nothing
 if (.true.) continue
 
+
 ! long string on multiline
-print *, "continue "  //&
-  "can be used "      //&
-  "wen a statement "  //&
-  "is required "      //&
-  "but there is "     //&
+print "(a)", &   
+  "continue " //lf//&
+  "can be used "     //lf//&
+  "wen a statement " //lf//&
+  "is required "     //lf//&
+  "but there is "    //lf//&
   "nothing to do there!"
 end program
 </code></pre>
@@ -451,16 +465,21 @@ end program
 <div class="panel-heading">console</div>
 <div class="panel-body">
 <pre class="code-panel">
-<code class="language-output">&gt;
-./continue
- continue can be used wen a statement is required but there is nothing to do there
+<code class="language-output"
+>&gt;./continue 
+continue 
+can be used 
+wen a statement 
+is required 
+but there is 
+nothing to do there!
 &gt;  
 </code></pre>
 </div>
 </div>
 </div>
 
-<p><em>Notes: </em>Symbol "&" must be used together with "//" in the example above, otherwise the strings are not concatenated and this is correct but it could have been done better. In other languages, strings are spanning many lines and the continuation operator is not required.</p>
+<p><em>Notes: </em>Symbol "&" must be used together with "//" in the example above, otherwise the strings are not concatenated and this is correct but it could have been done better.</p>
 
 <h2>Data Input/Output</h2>
 
@@ -470,7 +489,7 @@ end program
 
 <p>These operations require format specification, and can output a list of variables, constants or expressions. The arguments are separated by comma.</p> 
 
-<h4>The format specification</h4>
+<h3>Format specification</h3>
 
 <p>Data format can be simple as "*" that is handled automatically by the system and it supports many variables. Better format is a string containing a set of rule that you can create for different data types. Check the example:</p>
 
@@ -510,7 +529,7 @@ Test  0025  225.50200
 
 <p><em>Notes: </em> In the example above you can see 3 variables of different kind can be combined using a single format string that has inside 3 specifications separated by comma. You will get many errors until you get the format right. The format is very powerful feature in Fortran. If you learn it right you can create a report quickly from your data.<p>
 
-<h4>rule format</h4>
+<h3>Format Rules</h3>
 
 <p>Rule format is a string with the following convention: It must be enclosed in round brackets like: "( ... )" or '( ... )'. The specification can hold rules and arbitrary text. The text must be enclosed in alternative quotes, "" or '' depending on outer quotes. </p>
 
@@ -540,12 +559,13 @@ Test  0025  225.50200
 </tbody> 
 </table>
 
-<h4>rule multiplier</h4>
+<h3>Rule Multiplier</h3>
+
 <p>The rule can be multiplied like this: nR where n is an integer number. It will create n column having same rule R. The rule R use to start with a capital letter but new format works with lowercase letters as well.</p> 
 
 <hr>
 <p><b>Read next:</b>
-<a href="control.html">Control Flow</a></p>
+<a href="structure.html">Code Structure</a></p>
 
 <!-- Footer -->
 <footer class="footer">

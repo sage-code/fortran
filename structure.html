@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Website title -->
-  <title>Program Structure</title>  
+  <title>Code Structure</title>  
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
@@ -36,7 +36,7 @@
 </div><hr>
 
 
-<h1>Program Structure</h1>
+<h1>Code Structure</h1>
 
 
 <div class="alert alert-secondary shadow-sm">
@@ -50,6 +50,7 @@ Fortran has higher level concepts to organize a large program into smaller parts
     <li><a href="#subroutine">Subroutine</a></li>
     <li><a href="#function">Function</a></li>
     <li><a href="#module">Module</a></li>
+    <li><a href="#arguments">Arguments</a></li>
 </ul>
 
 <hr>
@@ -60,7 +61,7 @@ Fortran has higher level concepts to organize a large program into smaller parts
 
 <p>Fotran has a special keyword to define the main program. This is translated to function main() in C, and is the entry point of any fortran application. The main program has a name and two regions: executable region and content region.</p> 
 
-<p>First region after program name is the the executable region. You can use this to declare parameters and local variables but also the main thread of the application. Second is the content region for local functions and subroutines.</p>
+<p>First region after program name is the the executable region. You can use this to declare arguments, parameters and local variables but also the main thread of the application. Second is the content region for local functions and subroutines.</p>
 
 <!--code pannel-->
 <div class="panel">
@@ -69,8 +70,10 @@ Fortran has higher level concepts to organize a large program into smaller parts
 <pre class="code-panel"><code class="language-fortran line-numbers"
 >!this is fortran 
 program main
+   ! declare arguments
    ! declare parameters
    ! declare variables
+   ...
    ! program statements
    ...
 contains
@@ -82,7 +85,7 @@ end program
 
 <h4>program parameters</h4>
 
-<p>Program parameters are declared using statements. The input parameters must be parsed. There are specific variable names and functions available to capture the parameters.</p>
+<p>Program parameters are declared using statements. The input parameters must be parsed. There are specific variable names and functions available to capture the program parameters.</p>
 
 
 <h4>program exit status</h4>
@@ -99,9 +102,9 @@ end program
 
 <p>A subroutine is a subprogram that have a name, input/oturput parameters and side-effects. Subroutine has it's own local scope where you can declare variables. The subroutine can be created in "contains" region of program.</p>
 
-<h4>subroutine parameters</h4>
+<h4>subroutine arguments</h4>
 
-<p>The parameters are declared without type in the subroutine signature. These are called dummy parameters. At the beginning of the soubroutine, after signature, you can declare every parameter using declarative statements similar to local variables.</p>
+<p>The arguments are declared without type in the subroutine signature. These are called formal dummy arguments. At the beginning of the soubroutine, after signature, you can declare every argument intention and set arguments optional by using declarative statements similar to local variables.</p>
 
 <h4>return statement</h4>
 
@@ -109,7 +112,7 @@ end program
 
 <h4>subroutine results</h4>
 
-<p>A subroutine can have one or more results. The results are usually declared similar to parameters, except these are output parameters. You can set the result value as any other variable during subroutine execution. You must prepare the result before return.</p>
+<p>A subroutine can have one or more results. The results are usually declared similar to arguments, except these are output arguments. You can set the result value as any other variable during subroutine execution. You must prepare the result before return.</p>
 
 <h4>calling a subroutine</h4>
 
@@ -123,10 +126,10 @@ end program
 >!declare subroutine
 program main
    ! call subroutine
-   call test(arguments)
+   call test(&lt;arguments&gt;)
 contains
    ! test is the subroutine name
-   subroutine test(parameters)
+   subroutine test(&lt;dumy_arguments&gt;)
       ! declarations statements
       ...
       ! computation statements
@@ -147,14 +150,14 @@ end program
   <p>Function Components</p>
 </div>
 
-<h4>function parameters</h4>
+<h4>function arguments</h4>
 
-<p>The parameters are declared without type in the function signature. These are called dummy parameters. At the beginning of the function, after the signature, you can declare every parameter using declarative statements similar to local variables.</p>
+<p>The arguments are declared without type in the function signature. These are called dummy arguments. At the beginning of the function, after the signature, you can declare every argument type using declarative statements similar to local variables.</p>
 
 
 <h4>calling a function</h4>
 
-<p>Functions can be called in main program or subroutines using function name follow by round brackets () that contain list of arguments for the parameters. Functions can be used in expressions.</p>
+<p>Functions can be called in main program or subroutines using function name follow by round brackets () that contain list of actual arguments. Functions can be used in expressions.</p>
 
 <!--code pannel-->
 <div class="panel">
@@ -174,7 +177,7 @@ contains
       type_name:: r
       ...
       ! prepare result
-      r=expression
+      r = &lt;expression&gt;
    end function
 end program
 </code></pre>
@@ -198,7 +201,7 @@ contains
    ! fn is the function name
    function fn() result(r)
       ! prepare result
-      r=expression
+      r = &lt;expression&gt;
    end function
 end module
 
@@ -212,12 +215,152 @@ end program
 
 <p><em>Notes: </em>Modules can be contained in the same file as the main program but alos can be in separate files. When using separate files, the compiler can compile multiple modules. You can pass module names as a list of names to the compiler.</p>
 
-<!-- work in progress-->
+<h2><a id="arguments"></a>Arguments</h2>
+
+<p>In Fortran we define dummy arguments and actual arguments. They are not one and the same. Dummy arguments must be defined inside subprograms while actual arguments are values that are transfered to the dumy arguments as a copy or references.</p>
+
+<h4>problem</h4>
+
+<p>Currently, Fortran doesn't allow setting a default value for optional dummy arguments. If declaring a dummy argument as optional, the user must:</p>
+
+<ol>
+<li>Manually make appropriate checks about whether the actual argument is provided by the caller;</li>
+<li>Use a separate variable inside the procedure because the code must not reference the optional dummy argument if not present.</li>
+</ol>
+
+<!--two columns pattern-->
+<div class="row">
+<!-- first column -->
+<div class="column col-md-6 panel">
+<div class="panel-heading">example</div>
+<div class="panel-body">
+<pre class="code-panel">
+<code class="language-fortran line-numbers"
+>! arguments by name
+program main
+  integer:: r1,r2,r3
+  r1 = suma(2)
+  r2 = suma(2,4)
+  r3 = suma(2,4,6)
+  print *, "r1 = ", r1
+  print *, "r2 = ", r2
+  print *, "r3 = ", r3
+contains
+  function suma(a,b,c) result(re)
+    integer:: a, b, c, re 
+    optional:: b, c
+    ! default values 
+    integer:: b1, c1
+    if (present(b)) b1=b
+    if (present(c)) c1=c
+    ! prepare result
+    re = a + b1 + c1
+  end function 
+end program
+</code></pre>
+</div>
+</div>
+<!-- second column -->
+<div class="column col-md-6 panel">
+<div class="panel-heading">console</div>
+<div class="panel-body">
+<pre class="code-panel">
+<code class="language-output">
+&gt;./argname
+ r1 =            2
+ r2 =            6
+ r3 =           12
+</code></pre>
+</div>
+</div>
+</div>
+
+<p><em>Note: </em>A call must transfer arguments to a subprogram using one of two association techniques: by position or by name. You can specify the name of the arguments in the call. This is an important feature, useful especially when the posible arguents are many and some are optional. Built-in and standard Fortran functions and subroutines can have optional arguments that you can pass by name.</p>
+
+<h4>Receiver arguments</h4>
+
+<p>Function and subroutine can modify values of arguments. The new value can propagate back to the actual argument. The literals and the expression results are allways pass by value. Receiver arguments can be pass by reference.</p>
+
+<!--two columns pattern-->
+<div class="row">
+<!-- first column -->
+<div class="column col-md-6 panel">
+<div class="panel-heading">example: outarg.f95</div>
+<div class="panel-body">
+<pre class="code-panel">
+<code class="language-fortran line-numbers"
+>! argument intent (demo)
+program main
+  integer:: op = 0
+  call test(a=2, b=4, re = op)
+  print *, "a + b = ", op
+contains
+  subroutine test(a,b,re)
+    integer, intent(in):: a, b  
+    integer, intent(out):: re
+    ! prepare result
+    re = a + b
+  end subroutine 
+end program
+</code></pre>
+</div>
+</div>
+<!-- second column -->
+<div class="column col-md-6 panel">
+<div class="panel-heading">console</div>
+<div class="panel-body">
+<pre class="code-panel">
+<code class="language-output">
+&gt;./out
+ a = 2, b = 4
+ a + b =            6
+</code></pre>
+</div>
+</div>
+</div>
+
+<h4>surprise</h4>
+
+<p>Sometimes you want a local variable to be protected against change. For this you can declaring a "parameter". In Fortran parameters are not arguments. Parameters are actually local constants not what you have expected isn't it? That is very confusing indeed!</p>
+
+<!--two columns pattern-->
+<div class="row">
+<!-- first column -->
+<div class="column col-md-6 panel">
+<div class="panel-heading">example</div>
+<div class="panel-body">
+<pre class="code-panel">
+<code class="language-fortran line-numbers">! local parameter
+program main
+  integer:: r1,r2,r3
+  r2 = avg(2,4)
+  print *, "avg = ", r2
+contains
+  function avg(a,b) result(re)
+    integer:: a, b, re 
+    integer, parameter:: c = 2
+    re = (a + b) / 2
+  end function 
+end program
+</code></pre>
+</div>
+</div>
+<!-- second column -->
+<div class="column col-md-6 panel">
+<div class="panel-heading">console</div>
+<div class="panel-body">
+<pre class="code-panel">
+<code class="language-output">
+&gt;./parameter
+ r2 =            3
+</code></pre>
+</div>
+</div>
+</div>
 
 <hr>
 <p><b>Read next:</b>
-<a href="types.html">Data Types</a></p>
-
+<a href="control.html">Control Flow</a></p>
 <!-- Footer -->
 <footer class="footer">
   <div class="footer-copyright text-center"></div>
