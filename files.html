@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="Fundamental file handling concepts using Fortran.">
+  <meta name="description" content="Fundamental file handling features in Fortran.">
   <meta name="author" content="Elucian Moise">
   <meta name="keywords" content="sage, fortran, file, open, read, write">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,33 +51,167 @@
 </ul>
 </hr>
 
-<!-- a regular diagram -->
-<div class="text-center">
-  <img src="../images/while.svg" alt="no description"
-       width="600" class="img-fluid protect rounded shadow border" >
-  <p>While Loop</p>
-</div>
+<h2>Data Input/Output</h2>
+
+<p>Input/Output operations are tightly related to data types. Usually input/output can be from console or from data fields. Data files can be on disk or tape. There are 3 statement for performing I/O.</p> 
+
+<ul>
+    <li>read  - read user imput or parse data from file</li>
+    <li>print - display output to console</li>    
+    <li>write - report data into file</li> 
+</ul>
+
+<p>These operations require format specification, and can output a list of variables, constants or expressions. The arguments are separated by comma.</p> 
+
+<h2>Logic Unit</h2>
+
+<p>Data is transferred between the program and devices or files through a Fortran logical unit. Logical units are identified in an I/O statement by a logical unit number, a nonnegative integer from 0 to the maximum 4-byte integer value (2,147,483,647).</p>
+
+<h4>Standard I/O</h4>
+
+<p>The character "*" can appear as a logical unit identifier. The asterisk stands for <em>standard input</em> file when it appears in a READ statement; it stands for <em>standard output</em> file when it appears in a WRITE or PRINT statement.</p>
+
+<h4>Implicit Units</h4>
+
+<p>Unit numbers below 10 are reserved unit numbers for system ussage. You should use > 10 unit numbers when you create or open your own files. These are reserved:</p>
+
+<ul>
+    <li>Standard input is logical unit 5</li>
+    <li>Standard output is logical unit 6</li>
+    <li>Standard error is logical unit 0</li>
+</ul>
+
+<h2>Open File</h2>
+
+<p>If exist, a file can be open. If does not exist, a file can be created using "open" statement. When a file is open you must specify the logic unit. All other statement need the same unit ID to identify the file you are refering to.</p>
+
 
 <!--code pannel-->
 <div class="panel">
-<div class="panel-heading">example</div>
+<div class="panel-heading">example: report.f95</div>
 <div class="panel-body">
-<pre class="code-panel"><code class="language-fortran line-numbers">!this is fortran 
-program hellp
-    print "hello world"
-end program hellp
+<pre class="code-panel"><code class="language-fortran line-numbers"
+>program main
+  integer :: io   ! unit number
+  integer :: stat ! status number
+  !check if file exist and remove it
+  logical :: exists
+  inquire(file="report.txt", exist=exists)
+  if (exists) then
+    open(file="report.txt", newunit=io, iostat=stat)
+    if (stat == 0) then
+       close(io, status="delete", iostat=stat)  
+    end if
+  end if
+  !create new file report.txt
+  open(newunit=io, file="report.txt", &
+       status="new", action="write")
+  do i=1,10
+      write(io, *) "row", i
+  end do
+  close(io)
+end program
 </code></pre>
 </div></div>
 
 <!--console pannel-->
 <div class="panel">
-<div class="panel-heading">console</div>
+<div class="panel-heading">console/test</div>
 <div class="panel-body">
-<pre class="code-panel"><code class="language-output">gfortran hello.f95 -o hello
-./hello
-hello world
+<pre class="code-panel"><code class="language-output"
+>&gt;./report
+&gt;cat report.txt
+ row           1
+ row           2
+ row           3
+ row           4
+ row           5
+ row           6
+ row           7
+ row           8
+ row           9
+ row          10
+&gt;
 </code></pre>
 </div></div>
+
+<p><em>Description: </em>In the example above we have open a file called "report.txt" and we have recreated the file. Then we have written 10 rows and then close the file. Ouside of program, we have used command "cat" that is a Bash command to list the report content.</p>
+
+<h3>Format specification</h3>
+
+<p>Data format can be simple as "*" that is handled automatically by the system and it supports many variables. Better format is a string containing a set of rule that you can create for different data types:</p>
+
+<!--two columns pattern-->
+<div class="row">
+<!-- first column -->
+<div class="column col-md-6 panel">
+<div class="panel-heading">example</div>
+<div class="panel-body">
+<pre class="code-panel">
+<code class="language-fortran line-numbers">!fortran example
+program main
+  
+  real:: r = 225.502
+  integer:: i = 25
+  character(len=*):: t= "Test"
+  character(len=*),parameter::&
+  fmt='(a," ", i5.4," ", f10.5)'
+  
+  print fmt, trim(t), i, r
+end program
+</code></pre>
+</div>
+</div>
+<!-- second column -->
+<div class="column col-md-6 panel">
+<div class="panel-heading">console</div>
+<div class="panel-body">
+<pre class="code-panel">
+<code class="language-output"
+>&gt;./format
+Test  0025  225.50200
+</code></pre>
+</div>
+</div>
+</div>
+
+<p><em>Notes: </em> In the example above you can see 3 variables of different kind can be combined using a single format string that has inside 3 specifications separated by comma. You will get many errors until you get the format right. The format is very powerful feature in Fortran. If you learn it right you can create a report quickly from your data.<p>
+
+<h3>Format Rules</h3>
+
+<p>Rule format is a string with the following convention: It must be enclosed in round brackets like: "( ... )" or '( ... )'. The specification can hold rules and arbitrary text. The text must be enclosed in alternative quotes, "" or '' depending on outer quotes. </p>
+
+<!-- simple table-->
+<table class="table table-bordered table-striped" style="width: 100%;">
+<tr>    
+    <th>Format</th>
+    <th>Description</th>
+</tr></thead>
+
+<tbody>
+<tr><td> "..."    </td><td>Inserts arbitrary characters.</td></tr>
+<tr><td> Iw[.m]   </td><td>Read/write w characters as integer number, with optional number of leading zeros m. </td></tr>
+<tr><td> Bw[.m]   </td><td>Read/write w characters as binary values, with optional number of leading zeros m.  </td></tr>
+<tr><td> Ow[.m]   </td><td>Read/write w characters as octal values, with optional number of leading zeros m.   </td></tr>
+<tr><td> Zw[.m]   </td><td>Read/write w characters as hexadecimal values, with optional number of leading zeros m. </td></tr>
+<tr><td> Fw.d     </td><td>Read/write floating-point number in decimal notation, with w digits, of which d is the number of decimal places. Sign and floating point must be regarded in w. F0.d allows a variable length.  </td></tr>
+<tr><td> Ew.d     </td><td>Read/write floating-point number in exponential notation, with w characters and a mantissa of d digits..    </td></tr>
+<tr><td> EXw.d[Ee]</td><td>Read/write real value in hexadecimal, with field width w, the number of hexadecimal digits in d, and the optional exponent e (Fortran 2018).    </td></tr>
+<tr><td> Dw.d     </td><td>Read/write Floating-point number, double precision. </td></tr>
+<tr><td> A, Aw.   </td><td>Read/write arbitrary length string, or fixed string with w characters   </td></tr>
+<tr><td> Lw       </td><td>Read/write w characters as logical. </td></tr>
+<tr><td> nX       </td><td>Read: Ignore the next n characters.</td></tr>
+<tr><td> nX       </td><td>Write: Print n spaces." </td></tr>
+<tr><td> Tc       </td><td>Puts next character at position c in line.  </td></tr>
+<tr><td> /        </td><td>Force a line feed that makes rule o 2 rows.  </td></tr>
+</tbody> 
+</table>
+
+<h3>Rule Multiplier</h3>
+
+<p>The rule can be multiplied like this: nR where n is an integer number. It will create n column having same rule R. The rule R use to start with a capital letter but new format works with lowercase letters as well.</p> 
+
+
 
 <!--two columns pattern-->
 <div class="row">
