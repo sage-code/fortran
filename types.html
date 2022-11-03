@@ -429,8 +429,6 @@ end program string
 
 <p> In Fortrand longer strings can be represented on multiple lines if each line is ending with single ampersand symbol. This is the continuation operator and is not part of the string.</p>
 
-
-
 <!--two columns pattern-->
 <div class="row">
 <!-- first column -->
@@ -480,88 +478,6 @@ nothing to do there!
 </div>
 
 <p><em>Notes: </em>Symbol "&" must be used together with "//" in the example above, otherwise the strings are not concatenated and this is correct but it could have been done better.</p>
-
-<h2>Data Input/Output</h2>
-
-<p>Input/Output operations are tightly related to data types. Usually input/output can be from console or from file data fields. There are 3 statement for performing I/O.</p> 
-
-<pre>read, write, print </pre>
-
-<p>These operations require format specification, and can output a list of variables, constants or expressions. The arguments are separated by comma.</p> 
-
-<h3>Format specification</h3>
-
-<p>Data format can be simple as "*" that is handled automatically by the system and it supports many variables. Better format is a string containing a set of rule that you can create for different data types. Check the example:</p>
-
-<!--two columns pattern-->
-<div class="row">
-<!-- first column -->
-<div class="column col-md-6 panel">
-<div class="panel-heading">example</div>
-<div class="panel-body">
-<pre class="code-panel">
-<code class="language-fortran line-numbers">!fortran example
-program main
-  
-  real:: r = 225.502
-  integer:: i = 25
-  character(len=*):: t= "Test"
-  character(len=*),parameter::&
-  fmt='(a," ", i5.4," ", f10.5)'
-  
-  print fmt, trim(t), i, r
-end program
-</code></pre>
-</div>
-</div>
-<!-- second column -->
-<div class="column col-md-6 panel">
-<div class="panel-heading">console</div>
-<div class="panel-body">
-<pre class="code-panel">
-<code class="language-output"
->&gt;./format
-Test  0025  225.50200
-</code></pre>
-</div>
-</div>
-</div>
-
-<p><em>Notes: </em> In the example above you can see 3 variables of different kind can be combined using a single format string that has inside 3 specifications separated by comma. You will get many errors until you get the format right. The format is very powerful feature in Fortran. If you learn it right you can create a report quickly from your data.<p>
-
-<h3>Format Rules</h3>
-
-<p>Rule format is a string with the following convention: It must be enclosed in round brackets like: "( ... )" or '( ... )'. The specification can hold rules and arbitrary text. The text must be enclosed in alternative quotes, "" or '' depending on outer quotes. </p>
-
-<!-- simple table-->
-<table class="table table-bordered table-striped" style="width: 100%;">
-<tr>    
-    <th>Format</th>
-    <th>Description</th>
-</tr></thead>
-
-<tbody>
-<tr><td> "..."    </td><td>Inserts arbitrary characters.</td></tr>
-<tr><td> Iw[.m]   </td><td>Read/write w characters as integer number, with optional number of leading zeros m. </td></tr>
-<tr><td> Bw[.m]   </td><td>Read/write w characters as binary values, with optional number of leading zeros m.  </td></tr>
-<tr><td> Ow[.m]   </td><td>Read/write w characters as octal values, with optional number of leading zeros m.   </td></tr>
-<tr><td> Zw[.m]   </td><td>Read/write w characters as hexadecimal values, with optional number of leading zeros m. </td></tr>
-<tr><td> Fw.d     </td><td>Read/write floating-point number in decimal notation, with w digits, of which d is the number of decimal places. Sign and floating point must be regarded in w. F0.d allows a variable length.  </td></tr>
-<tr><td> Ew.d     </td><td>Read/write floating-point number in exponential notation, with w characters and a mantissa of d digits..    </td></tr>
-<tr><td> EXw.d[Ee]</td><td>Read/write real value in hexadecimal, with field width w, the number of hexadecimal digits in d, and the optional exponent e (Fortran 2018).    </td></tr>
-<tr><td> Dw.d     </td><td>Read/write Floating-point number, double precision. </td></tr>
-<tr><td> A, Aw.   </td><td>Read/write arbitrary length string, or fixed string with w characters   </td></tr>
-<tr><td> Lw       </td><td>Read/write w characters as logical. </td></tr>
-<tr><td> nX       </td><td>Read: Ignore the next n characters.</td></tr>
-<tr><td> nX       </td><td>Write: Print n spaces." </td></tr>
-<tr><td> Tc       </td><td>Puts next character at position c in line.  </td></tr>
-<tr><td> /        </td><td>Force a line feed that makes rule o 2 rows.  </td></tr>
-</tbody> 
-</table>
-
-<h3>Rule Multiplier</h3>
-
-<p>The rule can be multiplied like this: nR where n is an integer number. It will create n column having same rule R. The rule R use to start with a capital letter but new format works with lowercase letters as well.</p> 
 
 <hr>
 <p><b>Read next:</b>
