@@ -37,7 +37,78 @@
 
 <h1>Fortran Errors</h1>
 
-<div class="alert alert-secondary shadow-sm">Do not expect for a try...catch block that is available in modern languages. When there is an error in Fortran, the program just stop working. There is hope for improvements. The recent versions of Fortran have error management for specific operations that can fail, and require a recover system to avoid crashing.</div>
+<div class="alert alert-secondary shadow-sm">Do not expect for a try...catch block that is available in modern languages. In standard Fortran, when there is an error, the program just stop working and automaticly exit. The only exception is write, where you can use err=label to make a jump in case of error.</div>
+
+<h4>Topics & Bookmarks</h4>
+
+<p>The recent versions of Fortran have error management for specific operations that can fail, but you can recover from error and stop program from crashing. Modern Fortran has introduced four main areas for error capture:</p>
+
+<ol>
+<li><a href="#fileh">File handling and I/O</a></li>
+<li><a href="#IEEE">IEEE floating point errors</a></li>
+<li><a href="#daloc">Dynamic allocation</a></li>
+<li><a href=#cline">Command line operations</a></li>
+</ol>
+
+<h2><a id="fileh"></a>File handling and I/O</h2>
+
+<p>All the external file handling statements and I/O operations can take <em>iostat</em> and <em>iomsg</em> clauses. iostat is an integer which returns a non-zero value if there is an error, in which case, the character variable assigned to iomsg will return a brief error message.</p>
+
+<!--code pannel-->
+<div class="panel">
+<div class="panel-heading">example: error.f95</div>
+<div class="panel-body">
+<pre class="code-panel"><code class="language-fortran line-numbers">program error
+  integer :: io_stat
+  character (len=256) :: io_msg
+  ! try to open a file that do not exist  
+  open (file='myFile.dat', unit=10, &
+        access = "append", status="old", &
+        iostat=io_stat, iomsg=io_msg)
+  ! analyze the error
+  if (io_stat/=0) then
+    write (*,*) "Open myFile.dat failed."
+    write (*,*) "iostat = ", io_stat
+    write (*,*) "iomsg = ", trim(io_msg)
+  else
+    write (*,*) "File was open succesfuly."
+    close (unit=10)
+  end if
+end program
+</code></pre>
+</div></div>
+
+<!--console pannel-->
+<div class="panel">
+<div class="panel-heading">console</div>
+<div class="panel-body">
+<pre class="code-panel"><code class="language-output"
+>&ft;./error
+ Open myFile.dat failed.
+ iostat =            2
+ iomsg = Cannot open file myFile.dat: No such file or directory
+</code></pre>
+</div></div>
+
+<h4>Notes:</h4>
+
+<ol>
+<li>In modern fortran, the err=lable clause is still supported but should not be used.</li>
+
+<li>The non-zero integers and the messages are depending on the compiler. </li>
+
+<li>The intrinsic module, <em>iso_fortran_env</em>, gives access to two important values: <em>iostat_end</em> and <em>iostat_eor</em>. </li>
+
+<li>If <em>iostat</em> is non-zero, this is a signal of an error but the execution will not stop, except if you call <em>stop</em> statement explicit.</li>
+</ol>
+
+
+<h2><a id="IEEE"></a>IEEE floating point errors</h2>
+<!-- todo -->
+<h2><a id="daloc"></a>Dynamic allocation</h2>
+<!-- todo -->
+<h2><a id="cline"></a>Command line operations</h2>
+<!-- todo -->
 
 <!-- a regular diagram -->
 <div class="text-center">
@@ -47,27 +118,6 @@
 </div>
 
 
-<!--code pannel-->
-<div class="panel">
-<div class="panel-heading">example</div>
-<div class="panel-body">
-<pre class="code-panel"><code class="language-fortran line-numbers">!this is fortran 
-program hellp
-    print "hello world"
-end program hellp
-</code></pre>
-</div></div>
-
-<!--console pannel-->
-<div class="panel">
-<div class="panel-heading">console</div>
-<div class="panel-body">
-<pre class="code-panel"><code class="language-output">gfortran hello.f95 -o hello
-./hello
-hello world
-</code></pre>
-</div></div>
-
 <!--two columns pattern-->
 <div class="row">
 <!-- first column -->
@@ -75,7 +125,23 @@ hello world
 <div class="panel-heading">example</div>
 <div class="panel-body">
 <pre class="code-panel">
-<code class="language-bash line-numbers">!fortran example
+<code class="language-bash line-numbers">program error
+  integer :: io_stat
+  character (len=256) :: io_msg
+  ! try to open a file that do not exist  
+  open (file='myFile.dat', unit=10, &
+        access = "append", status="old", &
+        iostat=io_stat, iomsg=io_msg)
+  ! analyze the error
+  if (io_stat/=0) then
+    write (*,*) "Open myFile.dat failed."
+    write (*,*) "iostat = ", io_stat
+    write (*,*) "iomsg = ", trim(io_msg)
+  else
+    write (*,*) "File was open succesfuly."
+    close (unit=10)
+  end if
+end program
 </code></pre>
 </div>
 </div>
@@ -84,7 +150,13 @@ hello world
 <div class="panel-heading">console</div>
 <div class="panel-body">
 <pre class="code-panel">
-<code class="language-output">~&gt;
+<code class="language-output"
+>&ft;./error
+ Open myFile.dat failed.
+ iostat =            2
+ iomsg = Cannot open file 
+ myFile.dat: No such file 
+ or directory
 </code></pre>
 </div>
 </div>

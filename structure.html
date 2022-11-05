@@ -213,19 +213,19 @@ end program
 </code></pre>
 </div></div>
 
-<p><em>Notes: </em>Modules can be contained in the same file as the main program but alos can be in separate files. When using separate files, the compiler can compile multiple modules. You can pass module names as a list of names to the compiler.</p>
+<p><em>Notes: </em>Modules can be contained in the same file as the main program but also can be in separate files. When using separate files, the compiler can compile multiple modules. You can pass module names as a list of names to the compiler.</p>
 
 <h2><a id="arguments"></a>Arguments</h2>
 
-<p>In Fortran we define dummy arguments and actual arguments. They are not one and the same. Dummy arguments must be defined inside subprograms while actual arguments are values that are transfered to the dumy arguments as a copy or references.</p>
+<p>In Fortran we define dummy arguments and actual arguments. They are not one and the same. Dummy arguments must be defined inside subprograms while actual arguments are values that are transfered to the dumy arguments as copy or references.</p>
 
 <h4>problem</h4>
 
-<p>Currently, Fortran doesn't allow setting a default value for optional dummy arguments. If declaring a dummy argument as optional, the user must:</p>
+<p>Currently, Fortran doesn't allow setting a default value for optional dummy arguments. If declaring a dummy argument as optional, the user must implement special code:</p>
 
 <ol>
 <li>Manually make appropriate checks about whether the actual argument is provided by the caller;</li>
-<li>Use a separate variable inside the procedure because the code must not reference the optional dummy argument if not present.</li>
+<li>Use a separate variable inside the procedure because the code must not refer the optional dummy arguments if not present.</li>
 </ol>
 
 <!--two columns pattern-->
@@ -321,7 +321,7 @@ end program
 
 <h4>parameters</h4>
 
-<p>Sometimes you want a local variable to be protected against change. For this you can declaring a "parameter". In Fortran parameters are not arguments. Parameters are actually local constants, surprised? That is very confusing indeed!</p>
+<p> In Fortran parameters are not arguments. Parameters are actually local constants. That may be confusing! Parameters are local variables with initial value, protected against change.</p>
 
 <!--two columns pattern-->
 <div class="row">
