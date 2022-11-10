@@ -47,7 +47,8 @@
 <ul>
     <li><a href="#arrays">Arrays</a></li>
     <li><a href="#strings">Strings</a></li>
-    <li><a href="#struct">Structures</a></li>    
+    <li><a href="#types">Derived types</a></li> 
+    <li><a href="#pointers">Pointers</a></li>   
 </ul>
 
 <h2><a id="arrays"></a>Arrays</h2>
@@ -320,9 +321,9 @@ end program
 </code></pre>
 </div></div>
 
-<h2><a id="struct"></a>Structures</h2>
+<h2><a id="types"></a>Derived Types</h2>
 
-<p>Fortran has 5 built-in data types that can be used to define <em>derived types</em>. These are special form of data types that can encapsulate built-in types as well as other derived types. </p>
+<p>Fortran has 5 built-in data types that can be used to define <em>derived types</em>. These are special form of data types that can encapsulate multipe values of different built-in types as well as other derived types. Derived types are like struct or classes.</p>
 
 <h4>Symple syntax</h4>
 
@@ -395,7 +396,99 @@ end program
 </code></pre>
 </div>
 
+<h2><a id="pointers">Pointers</a></h2>
 
+<div class="alert alert-info">A pointer is a new type of variable which can be a reference the data stored by other variable (called target) or area of dynamically allocated memory. Pointers are vary useful to create advanced data structures and complex algorithms.</div>
+
+<h3>Pointer Target</h3>
+
+<p>Pointers are best thought of as variables which are dynamically reffering to or are associated with a particular target. Pointers are <em>pointing to</em> something. Valid pointer targets include:</p>
+
+<ul>
+<li>Variables declared with the <em>target</em> attribute.</p>
+<li>Other pointers of the same data type.</p>
+<li>Dynamicly allocated memory specific fot the pointer.</p>
+</ul>
+
+<p><em>Note: </em>Pointers may take advantage of dynamic storage but do not require the <em>allocatable</em> attribute. The ability to allocate and deallocate storage is an native property of pointer variables.</p>
+
+<!-- code block -->
+<pre><code class="language-fortran"
+>!declare target variable
+integer, target :: var
+</code></pre>
+
+<h3>Declare Ponter</h3>
+
+<p>A pointer is not just a number. It is a structure, it has data type and the phisical memory address of the target. Therefore after declare a pointer need to be associated to a target.</p>
+
+<!-- code block -->
+<pre><code class="language-fortran"
+>!declare a null pointer
+integer, pointer :: ptr
+
+! associate pointer to var
+ptr => var    
+</code></pre>
+
+<h3>Using a pointer</h3>
+
+<p>A pointer can hold a reference to one variable then switch to another variable. The pointer is used almost like a variable. It can be modified using regular operators. Take a look at example and read the comments:</p>
+
+<!--code pannel-->
+<div class="panel">
+<div class="panel-heading">example: point.f95</div>
+<div class="panel-body">
+<pre class="code-panel"><code class="language-fortran line-numbers"
+>program point
+  real, target :: a, b
+  real, pointer:: pa
+  if (associated(pa)) then
+     print *, 'test 1: pa is currently associated'
+  else
+     print *, 'test 1: pa is currently not associated'
+  endif
+  a = 1.2; b = 2.2 
+  pa => a ! associate pointer pa to variable a
+  print *, "pa = ", pa
+  if (associated(pa)) then
+     print *, 'test 2: pa is currently associated to a'
+  else
+     print *, 'test 2: pa is currently not associated'
+  endif
+  nullify (pa)
+  if (associated(pa)) then
+     print *, 'test 3: pa is currently associated'
+  else
+     print *, 'test 3: pa is currently not associated'
+  endif
+  pa => b ! associate pointer pa to variable b
+  if (associated(pa)) then
+     print *, 'test 4: pa is currently associated to b'
+  else
+     print *, 'test 4: pa is currently not associated'
+  endif
+  ! modify the variable b using it's alias (pa)
+  pa = pa + 1 
+  print *, "b = ", b
+end program
+</code></pre>
+</div></div>
+
+<!--console pannel-->
+<div class="panel">
+<div class="panel-heading">console</div>
+<div class="panel-body">
+<pre class="code-panel"><code class="language-output"
+>./point
+ test 1: pa is currently not associated
+ pa =    1.20000005    
+ test 2: pa is currently associated to a
+ test 3: pa is currently not associated
+ test 4: pa is currently associated to b
+ b =    3.20000005  
+</code></pre>
+</div></div>
 <!-- work in progress-->
 
 <hr>

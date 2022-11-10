@@ -51,6 +51,7 @@ Fortran has higher level concepts to organize a large program into smaller parts
     <li><a href="#function">Function</a></li>
     <li><a href="#module">Module</a></li>
     <li><a href="#arguments">Arguments</a></li>
+    <li><a href="#recursion">Recursion</a></li>
 </ul>
 
 <hr>
@@ -357,6 +358,56 @@ end program
 </div>
 </div>
 </div>
+
+<h2><a id="recursion"></a>Recursion</h2>
+
+<p>Recursive functions are special functions that can call themselves several times with different arguments. Fortran has suport for unlimited recursion. The only limitation is that you can run out of memory.</p>
+
+<h4>Banchmark</h4>
+
+<p>The following code is doing a well known test called "ackermann function". To understand this function better you can check this article: <a href="https://en.wikipedia.org/wiki/Ackermann_function">Wikipedia: Ackerman Function</p></p>
+
+<!--code pannel-->
+<div class="panel">
+<div class="panel-heading">example: recursion.f95</div>
+<div class="panel-body">
+<pre class="code-panel"><code class="language-fortran line-numbers"
+>! ackermann test
+program recursion
+   integer :: ack
+   real::t1,t2
+   call cpu_time(t1)
+   write(*,*) ack(3, 12)
+   call cpu_time(t2)
+   write(*,'("time=",f6.4)') (t2-t1)
+ end program
+
+ recursive function ack(m, n) result(a)
+   integer, intent(in) :: m,n
+   integer :: a
+   if (m == 0) then
+     a=n+1
+   else if (n == 0) then
+     a=ack(m-1,1)
+   else
+     a=ack(m-1, ack(m, n-1))
+   end if
+ end function
+</code></pre>
+</div></div>
+
+<!--console pannel-->
+<div class="panel">
+<div class="panel-heading">console</div>
+<div class="panel-body">
+<pre class="code-panel"><code class="language-output"
+>./recursion
+       32765
+time=3.4615    
+</code></pre>
+</div></div>
+
+<div class="alert alert-info">Notice in this test the function is declared <em>recursive</em>. It is not defined inside the program "contains" region but independent. I guess Fortran enable this feature.</p>
 
 <hr>
 <p><b>Read next:</b>
